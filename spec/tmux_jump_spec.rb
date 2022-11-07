@@ -23,8 +23,8 @@ RSpec.describe 'tmux-jump' do
 
   let(:simple_screen) do
     tmp_screen = <<~EOS
-      ~$ echo 'hello world! easymotion for tmux :)'
-      hello world! easymotion for tmux :)
+      ~$ echo 'hello world! easymotion for $TMUX_BIN :)'
+      hello world! easymotion for $TMUX_BIN :)
       ~$
     EOS
     tmp_screen[0..-2] # no newline ending
@@ -33,23 +33,23 @@ RSpec.describe 'tmux-jump' do
   let(:many_es_screen) do
     tmp_screen = <<~EOS
       ~$ echo 'eello eorld! easymotion eor emux :)'
-      eello eorld! easymotion eor tmux :)
+      eello eorld! easymotion eor $TMUX_BIN :)
       ~$ echo 'eello eorld! easymotion eor emux :)'
-      eello eorld! easymotion eor tmux :)
+      eello eorld! easymotion eor $TMUX_BIN :)
       ~$ echo 'eello eorld! easymotion eor emux :)'
-      eello eorld! easymotion eor tmux :)
+      eello eorld! easymotion eor $TMUX_BIN :)
       ~$ echo 'eello eorld! easymotion eor emux :)'
-      eello eorld! easymotion eor tmux :)
+      eello eorld! easymotion eor $TMUX_BIN :)
       ~$ echo 'eello eorld! easymotion eor emux :)'
-      eello eorld! easymotion eor tmux :)
+      eello eorld! easymotion eor $TMUX_BIN :)
       ~$ echo 'eello eorld! easymotion eor emux :)'
-      eello eorld! easymotion eor tmux :)
+      eello eorld! easymotion eor $TMUX_BIN :)
       ~$ echo 'eello eorld! easymotion eor emux :)'
-      eello eorld! easymotion eor tmux :)
+      eello eorld! easymotion eor $TMUX_BIN :)
       ~$ echo 'eello eorld! easymotion eor emux :)'
-      eello eorld! easymotion eor tmux :)
+      eello eorld! easymotion eor $TMUX_BIN :)
       ~$ echo 'eello eorld! easymotion eor emux :)'
-      eello eorld! easymotion eor tmux :)
+      eello eorld! easymotion eor $TMUX_BIN :)
       ~$
     EOS
     tmp_screen[0..-2] # no newline ending
@@ -127,7 +127,7 @@ RSpec.describe 'tmux-jump' do
     context 'when the prompting process answers' do
       before do
         expect(Kernel).to receive(:spawn) do |*args|
-          expect(args.first).to eq 'tmux'
+          expect(args.first).to eq '$TMUX_BIN'
           tmux_child_process_command = args.last.scan(/"(.+)"/).first.first
           spawn tmux_child_process_command.gsub('%1', 'e')
         end
@@ -141,7 +141,7 @@ RSpec.describe 'tmux-jump' do
     context 'when the prompting process does not answer' do
       before do
         expect(Kernel).to receive(:spawn) do |*args|
-          expect(args.first).to eq 'tmux'
+          expect(args.first).to eq '$TMUX_BIN'
         end
         expect(Timeout).to receive(:timeout).with(10).and_raise Timeout::Error
       end

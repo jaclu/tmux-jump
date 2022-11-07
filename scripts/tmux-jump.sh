@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 tmp_file="$(mktemp)"
-tmux command-prompt -1 -p 'char:' "run-shell \"printf '%1' >> $tmp_file\""
+$TMUX_BIN command-prompt -1 -p 'char:' "run-shell \"printf '%1' >> $tmp_file\""
 
 current_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $current_dir/utils.sh

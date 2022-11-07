@@ -60,7 +60,7 @@ end
 
 def recover_alternate_screen_after
   saved_screen =
-    `tmux capture-pane -ep -t #{Config.pane_nr}`[0..-2] # with colors...
+    `$TMUX_BIN capture-pane -ep -t #{Config.pane_nr}`[0..-2] # with colors...
       .gsub("\n", "\n\r")
   File.open(Config.pane_tty_file, 'a') do |tty|
     tty << CLEAR_SEQ + HOME_SEQ
@@ -84,7 +84,7 @@ end
 def prompt_char! # raises Timeout::Error
   tmp_file = Tempfile.new 'tmux-jump'
   Kernel.spawn(
-    'tmux', 'command-prompt', '-1', '-p', 'char:',
+    '$TMUX_BIN', 'command-prompt', '-1', '-p', 'char:',
     "run-shell \"printf '%1' >> #{tmp_file.path}\"")
   result_queue = Queue.new
   thread_0 = async_read_char_from_file! tmp_file, result_queue
@@ -119,10 +119,10 @@ end
 def async_detect_user_escape(result_queue)
   Thread.new do
     last_activity =
-      Open3.capture2 'tmux', 'display-message', '-p', '#{session_activity}'
+      Open3.capture2 '$TMUX_BIN', 'display-message', '-p', '#{session_activity}'
     loop do
       new_activity =
-        Open3.capture2 'tmux', 'display-message', '-p', '#{session_activity}'
+        Open3.capture2 '$TMUX_BIN', 'display-message', '-p', '#{session_activity}'
       sleep 0.05
       if last_activity != new_activity
         result_queue.push nil
@@ -191,34 +191,34 @@ def main
   rescue Timeout::Error
     Kernel.exit
   end
-  `tmux send-keys -X -t #{Config.pane_nr} cancel` if Config.pane_mode == '1'
+  `$TMUX_BIN send-keys -X -t #{Config.pane_nr} cancel` if Config.pane_mode == '1'
   start = -Config.scroll_position
   ending = -Config.scroll_position + Config.pane_height - 1
   screen_chars =
-    `tmux capture-pane -p -t #{Config.pane_nr} -S #{start} -E #{ending}`[0..-2].gsub("︎", '') # without colors
+    `$TMUX_BIN capture-pane -p -t #{Config.pane_nr} -S #{start} -E #{ending}`[0..-2].gsub("︎", '') # without colors
   positions = positions_of jump_to_char, screen_chars
   position_index = recover_screen_after do
     prompt_position_index! positions, screen_chars
   end
   Kernel.exit 0 if position_index.nil?
   jump_to = positions[position_index]
-  `tmux copy-mode -t #{Config.pane_nr}`
+  `$TMUX_BIN copy-mode -t #{Config.pane_nr}`
    # begin: tmux weirdness when 1st line is empty
-  `tmux send-keys -X -t #{Config.pane_nr} start-of-line`
-  `tmux send-keys -X -t #{Config.pane_nr} top-line`
-  `tmux send-keys -X -t #{Config.pane_nr} -N 200 cursor-right`
+  `$TMUX_BIN send-keys -X -t #{Config.pane_nr} start-of-line`
+  `$TMUX_BIN send-keys -X -t #{Config.pane_nr} top-line`
+  `$TMUX_BIN send-keys -X -t #{Config.pane_nr} -N 200 cursor-right`
    # end
-  `tmux send-keys -X -t #{Config.pane_nr} start-of-line`
-  `tmux send-keys -X -t #{Config.pane_nr} top-line`
-  `tmux send-keys -X -t #{Config.pane_nr} -N #{Config.scroll_position} cursor-up`
-  `tmux send-keys -X -t #{Config.pane_nr} -N #{jump_to} cursor-right`
+  `$TMUX_BIN send-keys -X -t #{Config.pane_nr} start-of-line`
+  `$TMUX_BIN send-keys -X -t #{Config.pane_nr} top-line`
+  `$TMUX_BIN send-keys -X -t #{Config.pane_nr} -N #{Config.scroll_position} cursor-up`
+  `$TMUX_BIN send-keys -X -t #{Config.pane_nr} -N #{jump_to} cursor-right`
 end
 
 if $PROGRAM_NAME == __FILE__
-  Config.pane_nr = `tmux display-message -p "\#{pane_id}"`.strip
+  Config.pane_nr = `$TMUX_BIN display-message -p "\#{pane_id}"`.strip
   format = '#{pane_id};#{pane_tty};#{pane_in_mode};#{cursor_y};#{cursor_x};'\
            '#{alternate_on};#{scroll_position};#{pane_height}'
-  tmux_data = `tmux display-message -p -t #{Config.pane_nr} -F "#{format}"`.strip.split(';')
+  tmux_data = `$TMUX_BIN display-message -p -t #{Config.pane_nr} -F "#{format}"`.strip.split(';')
   Config.pane_tty_file = tmux_data[1]
   Config.pane_mode = tmux_data[2]
   Config.cursor_y = tmux_data[3]
