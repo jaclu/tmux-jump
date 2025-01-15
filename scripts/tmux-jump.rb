@@ -137,9 +137,9 @@ end
 def positions_of(jump_to_char, screen_chars)
   positions = []
 
-  positions << 0 if screen_chars[0] =~ /\w/ && screen_chars[0] == jump_to_char
+  positions << 0 if screen_chars[0] =~ /\w/ && screen_chars[0].downcase == jump_to_char
   screen_chars.each_char.with_index do |char, i|
-    if (char =~ /\w/).nil? && screen_chars[i+1] && screen_chars[i+1] == jump_to_char
+    if (char =~ /\w/).nil? && screen_chars[i+1] && screen_chars[i+1].downcase == jump_to_char
       positions << i+1
     end
   end

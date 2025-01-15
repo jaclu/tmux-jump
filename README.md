@@ -6,6 +6,30 @@
 
 [![Build Status](https://travis-ci.org/schasse/tmux-jump.svg?branch=master)](https://travis-ci.org/schasse/tmux-jump)
 
+## Changes in this Fork
+
+### Dependency
+
+Minimum tmux version is now listed as 2.4 instead of 3.1, after being able
+to test compatability in various tmux versions
+
+### Uses a bind note if tmux >= 3.1
+
+If the used tmux supports it, a -N note is used when binding the trigger.
+This makes this key bind be listed when listing or searching for keys
+with notes, such as `<prefix>-?`
+
+### Multiple tmux versions usage
+
+Instead of using the command `tmux` directly `$TMUX_BIN` is used,
+to allow running an inner tmux server with a different version of tmux.
+A necessity when experimenting with backwards compatability of plugins etc.
+
+If TMUX_BIN is not defined it will be set to `tmux` so this should be usable
+also when the TMUX_BIN env variable is not defined.
+
+## The rest of this README is unchanged
+
 A fast way to jump wherever you want in your terminal without using the mouse. A plugin similar to [vimium](https://vimium.github.io/) and [easymotion](https://github.com/easymotion/vim-easymotion) but for tmux. tmux-jump is written in ruby and can easily be installed via tpm.
 
 ![tmux-jump-demo](https://user-images.githubusercontent.com/3882305/74186577-2f6aad80-4c4b-11ea-8054-91c54e3dd2af.gif)
@@ -14,7 +38,7 @@ From now to then I think about how to improve my dev tools. Copy and pasting ins
 
 ## Requirements
 
-* [tmux](https://github.com/tmux/tmux) >= 3.1
+* [tmux](https://github.com/tmux/tmux) >= 2.4
 * [ruby](https://www.ruby-lang.org/) >= 2.3
 
 ## Installation via [TPM](https://github.com/tmux-plugins/tpm)
