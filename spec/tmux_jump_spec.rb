@@ -87,7 +87,7 @@ RSpec.describe 'tmux-jump' do
   end
 
   describe '#prompt_position_index!' do
-    context 'when prompt char returns a char thats not on the screen' do
+    context 'when prompt char returns a char that is not on the screen' do
       before do
         allow_any_instance_of(Object).to receive(:prompt_char!).and_return 'b'
       end

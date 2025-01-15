@@ -1,1 +1,6 @@
-.olint.conf
+
+*~
+*#
+
+# cache for olint linter
+.cache.olint

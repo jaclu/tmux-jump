@@ -8,15 +8,17 @@
 #  impact. In all calls to tmux I use $TMUX_BIN instead in the rest of this
 #  plugin.
 #
-[ -z "$TMUX_BIN" ] && TMUX_BIN="tmux"
+[[ -z "$TMUX_BIN" ]] && TMUX_BIN="tmux"
 
 get_tmux_option() {
-  local option=$1
-  local default_value=$2
-  local option_value=$($TMUX_BIN show-option -gqv "$option")
-  if [ -z $option_value ]; then
-    echo $default_value
-  else
-    echo $option_value
-  fi
+    local option=$1
+    local default_value=$2
+    local option_value
+
+    option_value=$($TMUX_BIN show-option -gqv "$option")
+    if [[ -z $option_value ]]; then
+        echo "$default_value"
+    else
+        echo "$option_value"
+    fi
 }
