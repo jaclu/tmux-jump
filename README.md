@@ -10,6 +10,11 @@
 
 ## Changes in this Fork
 
+### Made searches case-sensitive
+
+Converting searches and screen content to lower-case just ends up giving
+to many false positives.
+
 ### Dependency
 
 Minimum tmux version is now listed as 2.4 instead of 3.1, after being able
