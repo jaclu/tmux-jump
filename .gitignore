@@ -2,5 +2,9 @@
 *~
 *#
 
+
+# dependency hint
+ruby_not_found
+
 # cache for olint linter
 .cache.olint
