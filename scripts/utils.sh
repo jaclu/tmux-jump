@@ -63,6 +63,13 @@ tmux_vers_compare() {
     [[ "$i_comp" -le "$i_ref" ]]
 }
 
+
+#===============================================================
+#
+#   Main
+#
+#===============================================================
+
 #
 #  I use an env var TMUX_BIN to point at the used tmux, defined in my
 #  tmux.conf, in order to pick the version matching the server running,
