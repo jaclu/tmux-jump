@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 
 BASE_PATH_TJ="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-source "$BASE_PATH_TJ"/scripts/utils.sh
 
 if ! command -v ruby >/dev/null; then
     # If dependency ruby not found, flag this issue, display error, then abort
-    touch "$f_ruby_not_found"
-    $TMUX_BIN display "ERROR: tmux-jump requires ruby" &
-    exit 1
+    touch "$BASE_PATH_TJ"/ruby_not_found
 fi
+
+source "$BASE_PATH_TJ"/scripts/utils.sh
+
 
 case $(get_tmux_option "@use_bind_key_notes_in_plugins" "No") in
     Yes | yes | True | true)
