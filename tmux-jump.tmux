@@ -2,10 +2,9 @@
 
 BASE_PATH_TJ="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-if ! command -v ruby >/dev/null; then
-    # If dependency ruby not found, flag this issue, display error, then abort
-    touch "$BASE_PATH_TJ"/ruby_not_found
-fi
+# shellcheck source=/dev/null
+source "$BASE_PATH_TJ"/scripts/tmux-plugin-tools.sh
+tpt_dependency_check "ruby" || exit 1
 
 source "$BASE_PATH_TJ"/scripts/utils.sh
 
