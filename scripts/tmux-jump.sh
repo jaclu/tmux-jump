@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-BASE_PATH_TJ="$( cd "$( dirname "$( dirname "${BASH_SOURCE[0]}" )")" && pwd )"
+BASE_PATH_TJ="$(cd "$(dirname "$(dirname "${BASH_SOURCE[0]}")")" && pwd)"
 
 # shellcheck source=scripts/utils.sh
 source "$BASE_PATH_TJ"/scripts/utils.sh

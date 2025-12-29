@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-BASE_PATH_TJ="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+BASE_PATH_TJ="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 "$BASE_PATH_TJ"/scripts/tmux-plugin-tools.sh dependency-check "ruby" || exit 1
 
